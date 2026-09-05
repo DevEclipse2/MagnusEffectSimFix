@@ -1,0 +1,268 @@
+<div id="glowscript" class="glowscript">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css" rel="stylesheet" />
+<link type="text/css" href="https://www.glowscript.org/css/ide.css" rel="stylesheet" />
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+// START JAVASCRIPT
+;(function() {;
+var ρσ_modules = {};
+var running, vx, vy, rz;
+ρσ_modules.pythonize = {};
+
+(function(){
+    function strings() {
+        var string_funcs, exclude, name;
+        string_funcs = set("capitalize strip lstrip rstrip islower isupper isspace lower upper swapcase center count endswith startswith find rfind index rindex format join ljust rjust partition rpartition replace split rsplit splitlines zfill".split(" "));
+        if (!arguments.length) {
+            exclude = (function(){
+                var s = ρσ_set();
+                s.jsset.add("split");
+                s.jsset.add("replace");
+                return s;
+            })();
+        } else if (arguments[0]) {
+            exclude = Array.prototype.slice.call(arguments);
+        } else {
+            exclude = null;
+        }
+        if (exclude) {
+            string_funcs = string_funcs.difference(set(exclude));
+        }
+        var ρσ_Iter0 = string_funcs;
+        ρσ_Iter0 = ((typeof ρσ_Iter0[Symbol.iterator] === "function") ? (ρσ_Iter0 instanceof Map ? ρσ_Iter0.keys() : ρσ_Iter0) : Object.keys(ρσ_Iter0));
+        for (var ρσ_Index0 of ρσ_Iter0) {
+            name = ρσ_Index0;
+            (ρσ_expr_temp = String.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name] = (ρσ_expr_temp = ρσ_str.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name];
+        }
+    };
+    if (!strings.__module__) Object.defineProperties(strings, {
+        __module__ : {value: "pythonize"}
+    });
+
+    ρσ_modules.pythonize.strings = strings;
+})();
+async function __main__() {
+"use strict";
+    var display = canvas;
+    var scene = canvas();
+
+    function round(num, n=0) {return Number(num.toFixed(n))}
+
+    var version, print, arange, __name__, type, ρσ_ls, dt, ρσ_unpack, vx, vy, vz, rx, ry, rz, ballCd, ballCl, ballmass, ballr, airD, ballCSA, g, running, sloc, ball, analytic, floor, varrow, lbl_vx, lbl_vy, lbl_rz;
+    version = ρσ_list_decorate([ "3.2", "glowscript" ]);
+    Array.prototype['+'] = function(r) {return this.concat(r)}
+    Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
+    window.__GSlang = "vpython";
+    print = GSprint;
+    arange = range;
+    __name__ = "__main__";
+    type = pytype;
+    var strings = ρσ_modules.pythonize.strings;
+
+    strings();
+    "4";
+    scene.width = 700;
+    "5";
+    scene.height = 500;
+    "6";
+    scene.background = vector(1, 1, 1);
+    "7";
+    scene.ambient = vector(.4, .4, .4);
+    "8";
+    scene.title = "Magnus Effect Simulation";
+    "9";
+    scene.range = 40;
+    "10";
+    scene.center = vector(20, 10, 0);
+    "13";
+    dt = .005;
+    "14";
+    ρσ_unpack = [25, 20, 5];
+    vx = ρσ_unpack[0];
+    vy = ρσ_unpack[1];
+    vz = ρσ_unpack[2];
+    "15";
+    ρσ_unpack = [0, 0, 40];
+    rx = ρσ_unpack[0];
+    ry = ρσ_unpack[1];
+    rz = ρσ_unpack[2];
+    "17";
+    ballCd = .54;
+    "18";
+    ballCl = .25;
+    "19";
+    ballmass = .6237;
+    "20";
+    ballr = .5;
+    "21";
+    airD = 1.225;
+    "22";
+    ballCSA = .046;
+    "23";
+    g = vector(0, 1["-u"]()["*"](9.8), 0);
+    "25";
+    running = false;
+    "28";
+    sloc = vector(0, 0, 0);
+    "29";
+    ball = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: sloc, radius: ballr, color: vector(.94, .45, .1), make_trail: true, retain: 200})]);
+    "30";
+    analytic = ρσ_interpolate_kwargs.call(this, curve, [ρσ_desugar_kwargs({color: color.red})]);
+    "32";
+    floor = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vector(20, 1["-u"]()["*"](ballr), 0), size: vector(150, .2, 80), color: vector(.8, .7, .6)})]);
+    "33";
+    varrow = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: sloc, axis: vector(vx, vy, vz)["*"](.2), shaftwidth: .2, color: color.blue})]);
+    "36";
+    scene.append_to_caption("\n<b>Launch Controls<\/b>\n");
+    "38";
+    async function launch_action() {
+        "39";
+        "40";
+        if (!running) {
+            "41";
+            running = true;
+            "42";
+            (await run_simulation());
+        }
+    };
+    if (!launch_action.__module__) Object.defineProperties(launch_action, {
+        __module__ : {value: null}
+    });
+
+    "44";
+    ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({text: "Launch Ball", bind: launch_action})]);
+    "46";
+    async function set_vx(s) {
+        "47";
+        "48";
+        vx = s.value;
+        "49";
+        lbl_vx.text = " vx: "["+"](str(round(vx, 1)))["+"](" m/s |");
+        "50";
+        varrow.axis = vector(vx, vy, vz)["*"](.2);
+    };
+    if (!set_vx.__argnames__) Object.defineProperties(set_vx, {
+        __argnames__ : {value: ["s"]},
+        __module__ : {value: null}
+    });
+
+    "52";
+    async function set_vy(s) {
+        "53";
+        "54";
+        vy = s.value;
+        "55";
+        lbl_vy.text = " vy: "["+"](str(round(vy, 1)))["+"](" m/s |");
+        "56";
+        varrow.axis = vector(vx, vy, vz)["*"](.2);
+    };
+    if (!set_vy.__argnames__) Object.defineProperties(set_vy, {
+        __argnames__ : {value: ["s"]},
+        __module__ : {value: null}
+    });
+
+    "58";
+    async function set_rz(s) {
+        "59";
+        "60";
+        rz = s.value;
+        "61";
+        lbl_rz.text = " rz (spin): "["+"](str(round(rz, 1)))["+"](" rad/s\n");
+    };
+    if (!set_rz.__argnames__) Object.defineProperties(set_rz, {
+        __argnames__ : {value: ["s"]},
+        __module__ : {value: null}
+    });
+
+    "63";
+    scene.append_to_caption("\n\n");
+    "64";
+    ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 0, max: 50, value: vx, bind: set_vx})]);
+    "65";
+    lbl_vx = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: " vx: "["+"](str(vx))["+"](" m/s |")})]);
+    "67";
+    ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 0, max: 50, value: vy, bind: set_vy})]);
+    "68";
+    lbl_vy = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: " vy: "["+"](str(vy))["+"](" m/s |")})]);
+    "70";
+    ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 1["-u"]()["*"](100), max: 100, value: rz, bind: set_rz})]);
+    "71";
+    lbl_rz = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: " rz (spin): "["+"](str(rz))["+"](" rad/s\n")})]);
+    "73";
+    async function run_simulation() {
+        var ρσ_ls, omega, sim_time, v, v_mag, fd, fm, a;
+        "74";
+        "75";
+        varrow.visible = false;
+        "76";
+        ball.pos = vector(sloc.x, sloc.y, sloc.z);
+        "77";
+        ball.velocity = vector(vx, vy, vz);
+        "78";
+        ball.clear_trail();
+        "79";
+        analytic.clear();
+        "81";
+        omega = vector(rx, ry, rz);
+        "82";
+        sim_time = 0;
+        "84";
+        while (ball.pos.y[">="](0)) {
+            "85";
+            (await rate(1["/"](dt)));
+            "87";
+            v = ball.velocity;
+            "88";
+            v_mag = mag(v);
+            "90";
+            if (v_mag[">"](0)) {
+                "92";
+                fd = 1["-u"]()["*"](.5)["*"](ballCd)["*"](airD)["*"](ballCSA)["*"](Math.pow(v_mag, 2))["*"](norm(v));
+                "95";
+                fm = .5["*"](ballCl)["*"](airD)["*"](ballCSA)["*"](ballr)["*"](cross(omega, v));
+                "96";
+            } else {
+                "97";
+                fd = vector(0, 0, 0);
+                "98";
+                fm = vector(0, 0, 0);
+            }
+            "101";
+            a = g["+"](fd["+"](fm)["/"](ballmass));
+            "102";
+            ball.velocity=ball.velocity["+"](a["*"](dt));
+            "103";
+            ball.pos=ball.pos["+"](ball.velocity["*"](dt));
+            "106";
+            ρσ_interpolate_kwargs.call(ball, ball.rotate, [ρσ_desugar_kwargs({angle: mag(omega)["*"](dt), axis: (mag(omega)[">"](0)) ? norm(omega) : vector(1, 0, 0)})]);
+            "109";
+            ρσ_interpolate_kwargs.call(analytic, analytic.append, [ρσ_desugar_kwargs({pos: sloc["+"](vector(vx, vy, vz)["*"](sim_time))["+"](.5["*"](g)["*"](Math.pow(sim_time, 2)))})]);
+            "111";
+            sim_time=sim_time["+"](dt);
+        }
+        "113";
+        varrow.pos = ball.pos;
+        "114";
+        varrow.visible = true;
+        "115";
+        running = false;
+    };
+    if (!run_simulation.__module__) Object.defineProperties(run_simulation, {
+        __module__ : {value: null}
+    });
+
+};
+if (!__main__.__module__) Object.defineProperties(__main__, {
+    __module__ : {value: null}
+});
+
+;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
+// END JAVASCRIPT
+
+//--><!]]></script>
+</div>
